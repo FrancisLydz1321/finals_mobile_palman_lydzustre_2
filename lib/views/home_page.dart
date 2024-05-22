@@ -1,10 +1,13 @@
 import 'package:finals_mobile_palman_lydzustre/constants/themes.dart';
 import 'package:finals_mobile_palman_lydzustre/widgets/ads_banner_widget.dart';
 import 'package:finals_mobile_palman_lydzustre/widgets/chip_widget.dart';
+import 'package:finals_mobile_palman_lydzustre/widgets/products_card_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart'; // 23.) import grid dependency
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -30,7 +33,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      drawer: Drawer(), // 7.) side drawer feature
+      drawer: const Drawer(), // 7.) side drawer feature
       body: SingleChildScrollView(
           // 8.) below of appbar
           child: Padding(
@@ -42,7 +45,7 @@ class HomePage extends StatelessWidget {
             const AdsBannerWidget(), // 12.) seperate widget/class to another file: ads_banner_widget.dart
 
             SizedBox(
-              height: 80,
+              height: 70,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
@@ -69,8 +72,8 @@ class HomePage extends StatelessWidget {
                 ], // 13.) seperate widget/class to another file: chips_widget.dart
               ),
             ),
-            SizedBox(
-              height: 8.0,
+            const SizedBox(
+              height: 12.0,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,64 +90,39 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              height: 8.0,
-            ),
-            Container(
-              // 16.) listview for the listed products
-              padding: const EdgeInsets.all(4),
-              // color: Colors.amber,
-              width: double.infinity,
-              height: 290,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: 3,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => Container(
-                  decoration: BoxDecoration(
-                    color: kWhiteColor,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(2, 6),
-                        color: Colors.black.withOpacity(.5),
-                        blurRadius: 8,
-                        spreadRadius: 4,
-                      ),
-                    ],
-                  ),
-                  margin: const EdgeInsets.all(8),
-                  width: MediaQuery.of(context).size.width * .5,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          color: kLightBackground,
-                        ),
-                      ),
-                      Container(
-                        child: Column(
-                          children: [
-                            Text('Products name'),
-                            Text('Short product Description'),
-                            Text('price'),
-                            Row(
-                              children: [
-                                Text('\$854'),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.add_circle)),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+            // const SizedBox(
+            //   height: 8.0,
+            // ),
+            const ProductsCardWidget(), // 19.) importing class/widget to another folder
+
+            Row(
+              // 22.) feature products and see all number 2
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Featured Products',
+                  style: AppTheme.kHeadingOne,
                 ),
+                Text(
+                  'See all',
+                  style: AppTheme.kSeeAllText,
+                ),
+              ],
+            ),
+
+            MasonryGridView.builder(
+              // 23.) flutter staggered grid
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 4,
+              shrinkWrap: false,
+              gridDelegate:
+                  const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1),
+              itemBuilder: (context, index) => const SizedBox(
+                height: 250,
+                child: ProductsCardWidget(),
               ),
-            )
+            ),
           ],
         ),
       )),
